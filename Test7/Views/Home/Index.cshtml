@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f8f9fa;
+        }
+
+        .dashboard-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .dashboard-button {
+            width: 100%;
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-container">
+    <h2 class="dashboard-title">Dashboard</h2>
+    
+    <div class="dashboard-buttons">
+        <a href="/Matakuliah/DashboardMatakuliah" class="btn btn-primary dashboard-button">Matakuliah</a>
+        <a href="/Dosen/DashboardDosen" class="btn btn-success dashboard-button">Dosen</a>
+        <a href="/Mahasiswa/DashboardMahasiswa" class="btn btn-info dashboard-button">Mahasiswa</a>
+        <a href="/Perkuliahan/DashboardPerkuliahan" class="btn btn-warning dashboard-button">Perkuliahan</a>
+    </div>
+</div>
+
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+</body>
+</html>

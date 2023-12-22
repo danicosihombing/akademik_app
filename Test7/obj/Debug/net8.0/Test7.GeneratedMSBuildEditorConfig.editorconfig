@@ -1,0 +1,87 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Test7
+build_property.RootNamespace = Test7
+build_property.ProjectDir = D:\TUTORIAL VSCODE\Test7\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\TUTORIAL VSCODE\Test7
+build_property._RazorSourceGeneratorDebug = 
+
+[D:/TUTORIAL VSCODE/Test7/Views/Dosen/CreateDosen.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9zZW5cQ3JlYXRlRG9zZW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TUTORIAL VSCODE/Test7/Views/Dosen/DashboardDosen.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9zZW5cRGFzaGJvYXJkRG9zZW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TUTORIAL VSCODE/Test7/Views/Dosen/GetByNip.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9zZW5cR2V0QnlOaXAuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TUTORIAL VSCODE/Test7/Views/Dosen/UpdateDosen.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9zZW5cVXBkYXRlRG9zZW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TUTORIAL VSCODE/Test7/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TUTORIAL VSCODE/Test7/Views/Mahasiswa/CreateMahasiswa.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFoYXNpc3dhXENyZWF0ZU1haGFzaXN3YS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TUTORIAL VSCODE/Test7/Views/Mahasiswa/DashboardMahasiswa.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFoYXNpc3dhXERhc2hib2FyZE1haGFzaXN3YS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TUTORIAL VSCODE/Test7/Views/Mahasiswa/GetByNim.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFoYXNpc3dhXEdldEJ5TmltLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TUTORIAL VSCODE/Test7/Views/Mahasiswa/UpdateMahasiswa.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFoYXNpc3dhXFVwZGF0ZU1haGFzaXN3YS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TUTORIAL VSCODE/Test7/Views/Matakuliah/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWF0YWt1bGlhaFxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TUTORIAL VSCODE/Test7/Views/Matakuliah/DashboardMatakuliah.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWF0YWt1bGlhaFxEYXNoYm9hcmRNYXRha3VsaWFoLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TUTORIAL VSCODE/Test7/Views/Matakuliah/GetByKode.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWF0YWt1bGlhaFxHZXRCeUtvZGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TUTORIAL VSCODE/Test7/Views/Matakuliah/UpdateMatakuliah.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWF0YWt1bGlhaFxVcGRhdGVNYXRha3VsaWFoLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TUTORIAL VSCODE/Test7/Views/Perkuliahan/CreatePerkuliahan.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVya3VsaWFoYW5cQ3JlYXRlUGVya3VsaWFoYW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TUTORIAL VSCODE/Test7/Views/Perkuliahan/DashboardPerkuliahan.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVya3VsaWFoYW5cRGFzaGJvYXJkUGVya3VsaWFoYW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TUTORIAL VSCODE/Test7/Views/Perkuliahan/GetAllPerkuliahanByNim.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVya3VsaWFoYW5cR2V0QWxsUGVya3VsaWFoYW5CeU5pbS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/TUTORIAL VSCODE/Test7/Views/Perkuliahan/UpdatePerkuliahan.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVya3VsaWFoYW5cVXBkYXRlUGVya3VsaWFoYW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 

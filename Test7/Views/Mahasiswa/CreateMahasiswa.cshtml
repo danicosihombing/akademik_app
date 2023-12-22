@@ -1,0 +1,97 @@
+@model Test7.Models.Mahasiswa
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div id="create-container">
+    <h2>Create Mahasiswa</h2>
+
+    <form id="create-form" asp-action="CreateMahasiswa" method="post">
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <label asp-for="Nim">NIM:</label>
+            <input asp-for="Nim" id="Nim" class="form-control" />
+            <span asp-validation-for="Nim" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Nama_Mhs">Nama:</label>
+            <input asp-for="Nama_Mhs" id="Nama_Mhs" class="form-control" />
+            <span asp-validation-for="Nama_Mhs" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Tgl_Lahir">Tanggal Lahir:</label>
+            <input asp-for="Tgl_Lahir" id="Tgl_Lahir" type="date" class="form-control" />
+            <span asp-validation-for="Tgl_Lahir" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Alamat">Alamat:</label>
+            <input asp-for="Alamat" id="Alamat" class="form-control" />
+            <span asp-validation-for="Alamat" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Jenis_Kelamin">Jenis Kelamin:</label>
+            <select asp-for="Jenis_Kelamin" id="Jenis_Kelamin" name="Jenis_Kelamin" class="form-control">
+                <option value="0">Laki-Laki</option>
+                <option value="1">Perempuan</option>
+            </select>
+            <span asp-validation-for="Jenis_Kelamin" class="text-danger"></span>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="createMahasiswa()">Create</button>
+    </form>
+</div>
+<div id="pesan-sukses" class="text-success" style="display:none;">
+    <!-- Pesan sukses dan tombol Create Again ditampilkan di sini -->
+</div>
+
+<script>
+    function getJenisKelaminValue() {
+        const jenisKelaminSelect = document.getElementById('Jenis_Kelamin');
+        const selectedValue = jenisKelaminSelect.options[jenisKelaminSelect.selectedIndex].value;
+        return parseInt(selectedValue);
+    }
+
+    function createMahasiswa() {
+        const formData = {
+            Nim: document.getElementById('Nim').value,
+            Nama_Mhs: document.getElementById('Nama_Mhs').value,
+            Tgl_Lahir: document.getElementById('Tgl_Lahir').value,
+            Alamat: document.getElementById('Alamat').value,
+            Jenis_Kelamin: getJenisKelaminValue()
+        };
+
+        fetch('/Mahasiswa/CreateMahasiswa', {
+            method: 'POST',
+            body: JSON.stringify(formData),
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.getElementsByName("__RequestVerificationToken")[0].value
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(result => {
+            const pesanSuksesContainer = document.getElementById('pesan-sukses');
+            const createContainer = document.getElementById('create-container');
+
+            if (result.success) {
+                pesanSuksesContainer.innerHTML = `
+                    <p>Create Success!</p>
+                    <div id="button-container">
+                        <a href="/Mahasiswa/DashboardMahasiswa" class="btn btn-secondary">Back To Mahasiswa Dashboard</a>
+                    </div>`;
+
+                // Menyembunyikan elemen "create-form"
+                createContainer.style.display = 'none';
+                pesanSuksesContainer.style.display = 'block';
+            } else {
+                console.error('Gagal memasukkan data:', result.errors);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>

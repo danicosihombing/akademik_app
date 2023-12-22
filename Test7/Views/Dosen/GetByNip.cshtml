@@ -1,0 +1,189 @@
+<!-- HTML untuk pencarian Dosen berdasarkan NIP -->
+@model Test7.Models.Dosen
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<style>
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    #search-container {
+        background-color: #f8f9fa; /* Warna latar belakang form */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        margin: auto;
+        margin-top: 50px;
+        text-align: center;
+    }
+
+    #result-container {
+        display: none;
+        background-color: #d4edda; /* Warna latar belakang kotak sukses */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        margin: auto;
+        margin-top: 20px;
+        text-align: left; /* Menyesuaikan ke kiri */
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        font-size: 1.2em;
+        margin-bottom: 5px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        font-size: 1em;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+    }
+
+    .btn-primary {
+        width: 50%; /* Lebar tombol Cari */
+        padding: 10px;
+        font-size: 1.2em;
+        background-color: #ffc107; /* Warna kuning */
+        border: none;
+        border-radius: 4px;
+        color: #212529; /* Warna teks tombol */
+        text-decoration: none; /* Menghapus garis bawah dari tautan */
+    }
+
+    .btn-secondary,
+    .btn-warning { /* Menyamakan ukuran tombol */
+        width: 50%;
+        padding: 10px;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 4px;
+        margin-top: 10px;
+        text-decoration: none; /* Menghapus garis bawah dari tautan */
+    }
+
+    .btn-secondary {
+        background-color: #007bff; /* Warna biru */
+        color: #ffffff; /* Warna teks tombol */
+    }
+
+    .btn-danger {
+        background-color: #dc3545; /* Warna merah */
+        color: #ffffff; /* Warna teks tombol */
+        width: 20%;
+        padding: 10px;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 4px;
+        margin-top: 10px;
+    }
+
+    .btn-warning {
+        background-color: #ffc107; /* Warna kuning */
+        color: #212529; /* Warna teks tombol */
+    }
+
+    .text-success {
+        color: #155724; /* Warna teks sukses */
+    }
+</style>
+
+<div id="search-container">
+    <h2>Cari berdasarkan NIP</h2>
+
+    <form id="search-form" asp-controller="Dosen" asp-action="GetByNip" method="get">
+        <div class="form-group">
+            <label asp-for="Nip">NIP Dosen:</label>
+            <input id="Nip" name="Nip" class="form-control" required />
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="searchDosen()">Cari</button>
+    </form>
+</div>
+
+<div id="result-container" class="text-success">
+    <!-- Hasil pencarian akan ditampilkan di sini -->
+    <h2>Get by NIP Result</h2>
+    <p style="font-size: 1.5em;">Dosen Found!</p>
+    <ul>
+        <li><strong>NIP Dosen:</strong> {data.nip || 'Undefined'}</li>
+        <li><strong>Nama Dosen:</strong> {data.nama_Dosen || 'Undefined'}</li>
+    </ul>
+    <div id="button-container">
+        <button class="btn btn-danger" onclick="deleteDosen('{data.nip}')">Delete</button>
+        <a href="/Dosen/DashboardDosen" class="btn btn-secondary">Kembali</a>
+        <a href="/Dosen/UpdateDosenForm?nip={data.nip}" class="btn btn-secondary">Update</a>
+    </div>
+</div>
+
+<script>
+    function searchDosen() {
+        const nip = document.getElementById('Nip').value;
+
+        fetch(`/Dosen/GetByNip?nip=${nip}`)
+            .then(response => response.json())
+            .then(data => {
+                const resultContainer = document.getElementById('result-container');
+                const searchContainer = document.getElementById('search-container');
+
+                if (data) {
+                    resultContainer.innerHTML = `
+                        <h2>Get by NIP Result</h2>
+                        <p style="font-size: 1.5em;">Dosen Found!</p>
+                        <ul>
+                            <li><strong>NIP Dosen:</strong> ${data.nip || 'Undefined'}</li>
+                            <li><strong>Nama Dosen:</strong> ${data.nama_Dosen || 'Undefined'}</li>
+                        </ul>
+                        <div id="button-container">
+                            <button class="btn btn-danger" onclick="deleteDosen('{data.nip}')">Delete</button>
+                            <a href="/Dosen/DashboardDosen" class="btn btn-secondary">Kembali</a>
+                            <a href="/Dosen/UpdateDosenForm?nip=${data.nip}" class="btn btn-secondary">Update</a>
+                        </div>`;
+                } else {
+                    resultContainer.innerHTML = `
+                        <h2>Get by NIP Result</h2>
+                        <p style="font-size: 1.5em;">Dosen Not Found</p>
+                        <div id="button-container">
+                            <a href="/Dosen/DashboardDosen" class="btn btn-secondary">Kembali</a>
+                        </div>`;
+                }
+
+                searchContainer.style.display = 'none';
+                resultContainer.style.display = 'block';
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function deleteDosen(nip) {
+        if (confirm('Apakah Anda yakin ingin menghapus dosen ini?')) {
+            fetch(`/Dosen/DeleteDosen?nip=${nip}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Dosen berhasil dihapus');
+                        window.location.href = '/Dosen/DashboardDosen';
+                    } else {
+                        alert('Gagal menghapus dosen');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    }
+</script>

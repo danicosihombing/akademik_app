@@ -1,0 +1,88 @@
+@model Test7.Models.Perkuliahan
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div id="create-container">
+    <h2>Create Perkuliahan</h2>
+
+    <form id="create-form" asp-action="CreatePerkuliahan" method="post">
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <label asp-for="Nim">NIM:</label>
+            <input asp-for="Nim" id="Nim" class="form-control" />
+            <span asp-validation-for="Nim" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Kode_MK">Kode MK:</label>
+            <input asp-for="Kode_MK" id="Kode_MK" class="form-control" />
+            <span asp-validation-for="Kode_MK" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Nip">NIP:</label>
+            <input asp-for="Nip" id="Nip" class="form-control" />
+            <span asp-validation-for="Nip" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Nilai">Nilai:</label>
+            <input asp-for="Nilai" id="Nilai" class="form-control" />
+            <span asp-validation-for="Nilai" class="text-danger"></span>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="createPerkuliahan()">Create</button>
+    </form>
+</div>
+<div id="pesan-sukses" class="text-success" style="display:none;">
+    <!-- Pesan sukses dan tombol Create Again ditampilkan di sini -->
+</div>
+
+<script>
+    function createPerkuliahan() {
+        const formData = {
+            Nim: document.getElementById('Nim').value,
+            Kode_MK: document.getElementById('Kode_MK').value,
+            Nip: document.getElementById('Nip').value,
+            Nilai: document.getElementById('Nilai').value
+        };
+
+        fetch('/Perkuliahan/CreatePerkuliahan', {
+            method: 'POST',
+            body: JSON.stringify(formData),
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.getElementsByName("__RequestVerificationToken")[0].value
+            }
+        })
+        .then(response => {
+    if (!response.ok) {
+        // Tampilkan pesan kesalahan status code
+        console.error(`HTTP error! Status: ${response.status}`);
+
+        // Baca body respons sebagai teks dan tampilkan
+        return response.text().then(text => {
+            console.error('Response body:', text);
+            throw new Error('Network response was not ok');
+        });
+    }
+            return response.json();
+        })
+        .then(result => {
+            const pesanSuksesContainer = document.getElementById('pesan-sukses');
+            const createContainer = document.getElementById('create-container');
+
+            if (result.success) {
+                pesanSuksesContainer.innerHTML = `
+                    <p>Create Success!</p>
+                    <div id="button-container">
+                        <a href="/Perkuliahan/DashboardPerkuliahan" class="btn btn-secondary">Back To Perkuliahan Dashboard</a>
+                    </div>`;
+
+                // Menyembunyikan elemen "create-form"
+                createContainer.style.display = 'none';
+                pesanSuksesContainer.style.display = 'block';
+            } else {
+                console.error('Gagal memasukkan data:', result.errors);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>

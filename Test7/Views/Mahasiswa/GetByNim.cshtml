@@ -1,0 +1,98 @@
+@model Test7.Models.Mahasiswa
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div id="search-container">
+    <h2>Cari berdasarkan Nim</h2>
+
+    <form id="search-form" asp-controller="Mahasiswa" asp-action="GetByNim" method="get">
+        <div class="form-group">
+            <label asp-for="Nim">NIM:</label>
+            <input id="Nim" name="Nim" class="form-control" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Cari</button>
+    </form>
+</div>
+
+<div id="result-container">
+    <!-- Hasil pencarian akan ditampilkan di sini -->
+</div>
+
+<script>
+   document.addEventListener('DOMContentLoaded', function () {
+    const searchForm = document.getElementById('search-form');
+    const searchContainer = document.getElementById('search-container');
+    const resultContainer = document.getElementById('result-container');
+
+    searchForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const nim = document.getElementById('Nim').value;
+
+        // Menggunakan Fetch API untuk mengirim permintaan HTTP
+        fetch(`/Mahasiswa/GetByNim?nim=${nim}`)
+            .then(response => response.json())
+            .then(data => {
+                // Menampilkan hasil pencarian atau pesan tidak ditemukan
+                if (data) {
+                    const jenisKelamin = typeof data.jenis_Kelamin === 'number'
+                        ? (data.jenis_Kelamin === 0 ? 'Laki-Laki' : 'Perempuan')
+                        : 'Undefined';
+
+                    resultContainer.innerHTML = `
+                        <h2>Get by Nim Result</h2>
+                        <p>Mahasiswa Found!</p>
+                        <ul>
+                            <li><strong>NIM:</strong> ${data.nim || 'Undefined'}</li>
+                            <li><strong>Nama Mahasiswa:</strong> ${data.nama_Mhs || 'Undefined'}</li>
+                            <li><strong>Tanggal Lahir:</strong> ${data.tgl_Lahir || 'Undefined'}</li>
+                            <li><strong>Alamat:</strong> ${data.alamat || 'Undefined'}</li>
+                            <li><strong>Jenis Kelamin:</strong> ${jenisKelamin}</li>
+                        </ul>
+                        <div id="button-container">
+                            <button class="btn btn-danger" onclick="deleteMahasiswa('${data.nim}')">Delete</button>
+                            <a href="/Mahasiswa/DashboardMahasiswa" class="btn btn-secondary">Kembali</a>
+                            <a href="/Mahasiswa/UpdateMahasiswaForm?nim=${data.nim}" class="btn btn-secondary">Update</a>
+                        </div>`;
+                } else {
+                    resultContainer.innerHTML = `
+                        <h2>Get by Nim Result</h2>
+                        <p>Mahasiswa Not Found</p>
+                        <div id="button-container">
+                            <a href="/Mahasiswa/DashboardMahasiswa" class="btn btn-secondary">Kembali</a>
+                        </div>`;
+                }
+
+                // Menyembunyikan formulir pencarian
+                searchContainer.style.display = 'none';
+            })
+            .catch(error => console.error('Error:', error));
+    });
+});
+
+function deleteMahasiswa(nim) {
+    if (confirm('Apakah Anda yakin ingin menghapus mahasiswa ini?')) {
+        // Menggunakan Fetch API untuk mengirim permintaan HTTP
+        fetch(`/Mahasiswa/DeleteMahasiswa?nim=${nim}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Handle success, misalnya dengan memberikan pesan sukses
+                    alert('Mahasiswa berhasil dihapus');
+                    // Redirect ke Mahasiswa/DashboardMahasiswa
+                    window.location.href = '/Mahasiswa/DashboardMahasiswa';
+                } else {
+                    // Handle error, misalnya dengan memberikan pesan error
+                    alert('Gagal menghapus mahasiswa');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+}
+
+</script>

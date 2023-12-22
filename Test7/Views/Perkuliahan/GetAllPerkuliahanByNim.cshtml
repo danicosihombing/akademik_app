@@ -1,0 +1,303 @@
+@model List<Test7.Models.Perkuliahan>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div id="search-container">
+    <h2>Cari berdasarkan NIM</h2>
+
+    <form id="search-form" asp-controller="Perkuliahan" asp-action="GetAllByNim" method="get">
+        <div class="form-group">
+            <label>NIM:</label>
+            <input id="nim" class="form-control" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Cari</button>
+    </form>
+</div>
+
+<div id="result-container">
+    <!-- Hasil pencarian akan ditampilkan di sini -->
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchForm = document.getElementById('search-form');
+        const searchContainer = document.getElementById('search-container');
+        const resultContainer = document.getElementById('result-container');
+        let page = 1;
+        let pageSize = 5;
+
+        searchForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const nim = document.getElementById('nim').value;
+
+            // Menggunakan Fetch API untuk mengirim permintaan HTTP
+            fetch(`/Perkuliahan/GetAllPerkuliahanByNim?nim=${nim}&page=${page}&pageSize=${pageSize}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Menampilkan hasil pencarian atau pesan tidak ditemukan
+                    if (data && data.length > 0) {
+                        resultContainer.innerHTML = `
+                             <h2 id="judul">Data Perkuliahan Berdasarkan NIM Mahasiswa</h2>
+                            <div class="horizontal-results">
+                                ${data.map(perkuliahan => `
+                                    <div class="perkuliahan-result">
+                                        <p><strong>ID Perkuliahan:</strong> ${perkuliahan.perkuliahanId || 'Undefined'}</p>
+                                        <p><strong>NIM:</strong> ${perkuliahan.nim || 'Undefined'}</p>
+                                        <p><strong>Kode MK:</strong> ${perkuliahan.kode_MK || 'Undefined'}</p>
+                                        <p><strong>NIP:</strong> ${perkuliahan.nip || 'Undefined'}</p>
+                                        <p><strong>Nilai:</strong> ${perkuliahan.nilai || 'Undefined'}</p>
+                                        
+                                        <!-- Tombol delete -->
+                                        <button class="btn btn-danger" onclick="deletePerkuliahan('${perkuliahan.perkuliahanId}')">Delete</button>
+                                        
+                                        <!-- Tombol update -->
+                                        <a href="/Perkuliahan/UpdatePerkuliahanForm?perkuliahanId=${perkuliahan.perkuliahanId}" class="btn btn-secondary">Update</a>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div id="button-container">
+                                <a href="#" class="btn btn-secondary" id="prevButton">Sebelumnya</a>
+                                <a href="#" class="btn btn-secondary" id="nextButton">Selanjutnya</a>
+                                <a href="/Perkuliahan/DashboardPerkuliahan" class="btn btn-secondary" id="kembali">Kembali</a>
+                            </div>`;
+                        // Tambahkan event listener untuk tombol "Sebelumnya"
+                        document.getElementById('prevButton').addEventListener('click', function () {
+                            if (page > 1) {
+                                page--;
+                                fetchAndDisplayResults();
+                            }
+                        });
+                        // Tambahkan event listener untuk tombol "Selanjutnya"
+                        document.getElementById('nextButton').addEventListener('click', function () {
+                            page++;
+                            fetchAndDisplayResults();
+                        });
+                    } else {
+                        resultContainer.innerHTML = `
+                            <h2>Get by NIM Result</h2>
+                            <p>Perkuliahan Not Found</p>
+                            <div id="button-container">
+                                <a href="/Perkuliahan/DashboardPerkuliahan" class="btn btn-secondary">Kembali</a>
+                            </div>`;
+                    }
+
+                    // Menyembunyikan formulir pencarian
+                    searchContainer.style.display = 'none';
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        // Fungsi untuk mengambil dan menampilkan hasil dengan page yang telah diupdate
+        function fetchAndDisplayResults() {
+            const nim = document.getElementById('nim').value;
+            fetch(`/Perkuliahan/GetAllPerkuliahanByNim?nim=${nim}&page=${page}&pageSize=${pageSize}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Menampilkan hasil pencarian atau pesan tidak ditemukan
+                    if (data && data.length > 0) {
+                        resultContainer.innerHTML = `
+                           <h2 id="judul">Data Perkuliahan Berdasarkan NIM Mahasiswa</h2>
+                            <div class="horizontal-results">
+                                ${data.map(perkuliahan => `
+                                    <div class="perkuliahan-result">
+                                        <p><strong>ID Perkuliahan:</strong> ${perkuliahan.perkuliahanId || 'Undefined'}</p>
+                                        <p><strong>NIM:</strong> ${perkuliahan.nim || 'Undefined'}</p>
+                                        <p><strong>Kode MK:</strong> ${perkuliahan.kode_MK || 'Undefined'}</p>
+                                        <p><strong>NIP:</strong> ${perkuliahan.nip || 'Undefined'}</p>
+                                        <p><strong>Nilai:</strong> ${perkuliahan.nilai || 'Undefined'}</p>
+                                        
+                                        <!-- Tombol delete -->
+                                        <button class="btn btn-danger" onclick="deletePerkuliahan('${perkuliahan.perkuliahanId}')">Delete</button>
+                                        
+                                        <!-- Tombol update -->
+                                        <a href="/Perkuliahan/UpdatePerkuliahanForm?perkuliahanId=${perkuliahan.perkuliahanId}" class="btn btn-secondary">Update</a>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div id="button-container">
+                                <a href="#" class="btn btn-secondary" id="prevButton">Sebelumnya</a>
+                                <a href="#" class="btn btn-secondary" id="nextButton">Selanjutnya</a>
+                                <a href="/Perkuliahan/DashboardPerkuliahan" class="btn btn-secondary" id="kembali">Kembali</a>
+                            </div>`;
+                        // Tambahkan event listener untuk tombol "Sebelumnya"
+                        document.getElementById('prevButton').addEventListener('click', function () {
+                            if (page > 1) {
+                                page--;
+                                fetchAndDisplayResults();
+                            }
+                        });
+                        // Tambahkan event listener untuk tombol "Selanjutnya"
+                        document.getElementById('nextButton').addEventListener('click', function () {
+                            page++;
+                            fetchAndDisplayResults();
+                        });
+                    } else {
+                        resultContainer.innerHTML = `
+                            <h2>Get by NIM Result</h2>
+                            <p>Perkuliahan Not Found</p>
+                            <div id="button-container">
+                                <a href="/Perkuliahan/DashboardPerkuliahan" class="btn btn-secondary">Kembali</a>
+                            </div>`;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    });
+
+    // Pindahkan definisi fungsi ke cakupan global
+    function deletePerkuliahan(perkuliahanId) {
+        if (confirm('Apakah Anda yakin ingin menghapus perkuliahan ini?')) {
+            // Menggunakan Fetch API untuk mengirim permintaan HTTP
+            fetch(`/Perkuliahan/DeletePerkuliahan?perkuliahanId=${perkuliahanId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Handle success, misalnya dengan memberikan pesan sukses
+                        alert('Perkuliahan berhasil dihapus');
+                        // Refresh halaman untuk menampilkan hasil terbaru
+                        window.location.href = '/Perkuliahan/GetAllPerkuliahanByNimForm';
+                    } else {
+                        // Handle error, misalnya dengan memberikan pesan error
+                        alert('Gagal menghapus perkuliahan');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    }
+</script>
+
+
+<style>
+
+    #judul{
+            text-align: center;
+        }
+    /* Tambahkan gaya CSS untuk menampilkan hasil secara horizontal */
+    .horizontal-results {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start; /* Menyusun dari kiri ke kanan */
+    }
+
+    /* Tambahkan gaya CSS untuk memberikan jarak antar hasil pencarian */
+    .perkuliahan-result {
+        width: 18%; /* Mengatur lebar setiap kotak */
+        height: 230px;
+        margin-bottom: 30px;
+        border: 1px solid #ddd; /* Menambahkan border */
+        padding: 10px; /* Menambahkan padding */
+        border-radius: 8px; /* Menambahkan border radius */
+        box-sizing: border-box; /* Menyesuaikan lebar dengan padding dan border */
+        margin-right: 10px;
+        position: relative; /* Menjadikan posisi relatif untuk menempatkan tombol */
+    }
+
+/* Penyesuaian untuk tombol delete dan update */
+.perkuliahan-result button,
+.perkuliahan-result a {
+    position: absolute;
+    bottom: 10px;
+    transform: translateX(-50%);
+    padding: 5px 10px; /* Padding untuk kedua tombol */
+    border-radius: 5px; /* Border radius untuk kedua tombol */
+    text-align: center; /* Posisi teks di tengah tombol */
+    cursor: pointer; /* Kursor berubah menjadi tangan saat diarahkan ke tombol */
+    text-decoration: none; /* Menghapus garis bawah teks */
+    box-sizing: content-box; /* Untuk menghindari perbedaan ukuran */
+}
+
+/* Penyesuaian untuk tombol delete */
+.perkuliahan-result button {
+    left: 30%; /* Letakkan tombol delete 30% dari kiri */
+    background-color: #dc3545; /* Warna latar belakang tombol delete */
+    color: #fff; /* Warna teks tombol delete */
+    border: 2px solid #dc3545; /* Warna border tombol delete */
+}
+
+/* Penyesuaian untuk tombol update */
+.perkuliahan-result a {
+    left: 65%; /* Letakkan tombol update 65% dari kiri */
+    background-color: #ffc107; /* Warna latar belakang tombol update (kuning) */
+    color: #212529; /* Warna teks tombol update */
+    border: 1px solid #ffc107; /* Warna border tombol update */
+}
+
+/* Hover effect untuk tombol delete dan update */
+.perkuliahan-result button:hover,
+.perkuliahan-result a:hover {
+    background-color: #3503ec; /* Warna latar belakang saat tombol dihover */
+    border: 2px solid #3503ec; /* Warna border saat tombol dihover */
+}
+
+ /* Penyesuaian untuk tombol "Sebelumnya" */
+    #prevButton {
+        position: absolute;
+        bottom: 10px;
+        left: 25%; /* Letakkan tombol "Sebelumnya" di tengah */
+        background-color: #ffc107; /* Warna latar belakang tombol "Sebelumnya" (kuning) */
+        color: #212529; /* Warna teks tombol "Sebelumnya" */
+        border: 1px solid #ffc107; /* Warna border tombol "Sebelumnya" */
+        border-radius: 5px; /* Border radius untuk tombol "Sebelumnya" */
+        padding: 5px 10px; /* Padding untuk tombol "Sebelumnya" */
+        cursor: pointer; /* Kursor berubah menjadi tangan saat diarahkan ke tombol */
+        text-decoration: none; /* Menghapus garis bawah teks */
+        box-sizing: content-box; /* Untuk menghindari perbedaan ukuran */
+    }
+
+    /* Penyesuaian untuk tombol "Selanjutnya" */
+    #nextButton {
+        position: absolute;
+        bottom: 10px;
+        left: 70%; /* Letakkan tombol "Selanjutnya" di tengah */
+        background-color: #ffc107; /* Warna latar belakang tombol "Selanjutnya" (kuning) */
+        color: #212529; /* Warna teks tombol "Selanjutnya" */
+        border: 1px solid #ffc107; /* Warna border tombol "Selanjutnya" */
+        border-radius: 5px; /* Border radius untuk tombol "Selanjutnya" */
+        padding: 5px 10px; /* Padding untuk tombol "Selanjutnya" */
+        cursor: pointer; /* Kursor berubah menjadi tangan saat diarahkan ke tombol */
+        text-decoration: none; /* Menghapus garis bawah teks */
+        box-sizing: content-box; /* Untuk menghindari perbedaan ukuran */
+    }
+
+    /* Penyesuaian untuk tombol "Kembali" */
+    #kembali {
+        position: fixed; /* Tetap di tempat ketika di-scroll */
+        bottom: 10px;
+        left: 50%; /* Letakkan tombol "Kembali" di tengah */
+        transform: translateX(-50%); /* Pusatkan tombol "Kembali" secara horizontal */
+        background-color: #007bff; /* Warna latar belakang tombol "Kembali" (biru) */
+        color: #fff; /* Warna teks tombol "Kembali" */
+        border: 2px solid #007bff; /* Warna border tombol "Kembali" */
+        border-radius: 5px; /* Border radius untuk tombol "Kembali" */
+        padding: 5px 10px; /* Padding untuk tombol "Kembali" */
+        cursor: pointer; /* Kursor berubah menjadi tangan saat diarahkan ke tombol */
+        text-decoration: none; /* Menghapus garis bawah teks */
+        box-sizing: content-box; /* Untuk menghindari perbedaan ukuran */
+    }
+
+
+    /* Hover effect untuk tombol "Sebelumnya" */
+    #prevButton:hover {
+        background-color: #3503ec; /* Warna latar belakang saat tombol "Sebelumnya" dihover */
+        border: 2px solid #3503ec; /* Warna border saat tombol "Sebelumnya" dihover */
+    }
+
+    /* Hover effect untuk tombol "Selanjutnya" */
+    #nextButton:hover {
+        background-color: #3503ec; /* Warna latar belakang saat tombol "Selanjutnya" dihover */
+        border: 2px solid #3503ec; /* Warna border saat tombol "Selanjutnya" dihover */
+    }
+
+    /* Hover effect untuk tombol "Kembali" */
+    #backButton:hover {
+        background-color: #0056b3; /* Warna latar belakang saat tombol "Kembali" dihover (biru lebih gelap) */
+        border: 2px solid #0056b3; /* Warna border saat tombol "Kembali" dihover (biru lebih gelap) */
+    }
+
+</style>

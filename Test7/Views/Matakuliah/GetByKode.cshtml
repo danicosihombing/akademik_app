@@ -1,0 +1,182 @@
+@model Test7.Models.Matakuliah
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<style>
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    #search-container {
+        background-color: #f8f9fa; /* Warna latar belakang form */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        margin: auto;
+        margin-top: 50px;
+        text-align: center;
+    }
+
+    #result-container {
+        display: none;
+        background-color: #d4edda; /* Warna latar belakang kotak sukses */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        margin: auto;
+        margin-top: 20px;
+        text-align: left; /* Menyesuaikan ke kiri */
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        font-size: 1.2em;
+        margin-bottom: 5px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        font-size: 1em;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+    }
+
+    .btn-primary {
+        width: 50%; /* Lebar tombol Cari */
+        padding: 10px;
+        font-size: 1.2em;
+        background-color: #ffc107; /* Warna kuning */
+        border: none;
+        border-radius: 4px;
+        color: #212529; /* Warna teks tombol */
+        text-decoration: none; /* Menghapus garis bawah dari tautan */
+    }
+
+    .btn-secondary,
+    .btn-warning { /* Menyamakan ukuran tombol */
+        width: 50%;
+        padding: 10px;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 4px;
+        margin-top: 10px;
+        text-decoration: none; /* Menghapus garis bawah dari tautan */
+    }
+
+    .btn-secondary {
+        background-color: #007bff; /* Warna biru */
+        color: #ffffff; /* Warna teks tombol */
+    }
+
+    .btn-danger {
+        background-color: #dc3545; /* Warna merah */
+        color: #ffffff; /* Warna teks tombol */
+        width: 20%;
+        padding: 10px;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 4px;
+        margin-top: 10px;
+    }
+
+    .btn-warning {
+        background-color: #ffc107; /* Warna kuning */
+        color: #212529; /* Warna teks tombol */
+    }
+
+    .text-success {
+        color: #155724; /* Warna teks sukses */
+    }
+</style>
+
+<div id="search-container">
+    <h2>Cari berdasarkan Kode</h2>
+
+    <form id="search-form" asp-controller="Matakuliah" asp-action="GetByKode" method="get">
+        <div class="form-group">
+            <label asp-for="Kode_MK">Kode Matakuliah:</label>
+            <input id="Kode_MK" name="Kode_MK" class="form-control" required />
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="searchMatakuliah()">Cari</button>
+    </form>
+</div>
+
+<div id="result-container" class="text-success">
+    <!-- Hasil pencarian akan ditampilkan di sini -->
+    <p style="font-size: 1.5em;">Create Success!</p>
+    <div id="button-container">
+        <button class="btn btn-danger" onclick="deleteMatakuliah('${data.kode_MK}')">Delete</button>
+        <a href="/Matakuliah/DashboardMatakuliah" class="btn btn-secondary">Kembali</a>
+        <a href="/Matakuliah/UpdateMatakuliahForm?kode=${data.kode_MK}" class="btn btn-warning">Update</a>
+    </div>
+</div>
+
+<script>
+    function searchMatakuliah() {
+        const kode = document.getElementById('Kode_MK').value;
+
+        fetch(`/Matakuliah/GetByKode?kode=${kode}`)
+            .then(response => response.json())
+            .then(data => {
+                const resultContainer = document.getElementById('result-container');
+                const searchContainer = document.getElementById('search-container');
+
+                if (data) {
+                    resultContainer.innerHTML = `
+                        <p style="font-size: 1.5em;">Matakuliah Found!</p>
+                        <ul>
+                            <li><strong>Kode MK:</strong> ${data.kode_MK || 'Undefined'}</li>
+                            <li><strong>Nama MK:</strong> ${data.nama_MK || 'Undefined'}</li>
+                            <li><strong>SKS:</strong> ${data.sks || 'Undefined'}</li>
+                        </ul>
+                        <div id="button-container">
+                            <button class="btn btn-danger" onclick="deleteMatakuliah('${data.kode_MK}')">Delete</button>
+                            <a href="/Matakuliah/DashboardMatakuliah" class="btn btn-secondary">Kembali</a>
+                            <a href="/Matakuliah/UpdateMatakuliahForm?kode=${data.kode_MK}" class="btn btn-warning">Update</a>
+                        </div>`;
+                } else {
+                    resultContainer.innerHTML = `
+                        <p style="font-size: 1.5em;">Matakuliah Not Found</p>
+                        <div id="button-container">
+                            <a href="/Matakuliah/DashboardMatakuliah" class="btn btn-secondary">Kembali</a>
+                        </div>`;
+                }
+
+                searchContainer.style.display = 'none';
+                resultContainer.style.display = 'block';
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function deleteMatakuliah(kode) {
+        if (confirm('Apakah Anda yakin ingin menghapus matakuliah ini?')) {
+            fetch(`/Matakuliah/DeleteMatakuliah?kode=${kode}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Matakuliah berhasil dihapus');
+                        window.location.href = '/Matakuliah/DashboardMatakuliah';
+                    } else {
+                        alert('Gagal menghapus matakuliah');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    }
+</script>

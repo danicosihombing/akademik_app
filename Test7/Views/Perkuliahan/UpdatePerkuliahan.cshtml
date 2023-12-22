@@ -1,0 +1,96 @@
+@model Test7.Models.Perkuliahan
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div id="update-container">
+    <h2>Update Perkuliahan</h2>
+
+    <form id="update-form" asp-action="UpdatePerkuliahan" method="put">
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <label asp-for="PerkuliahanId">ID Perkuliahan:</label>
+            <input asp-for="PerkuliahanId" id="Update_PerkuliahanId" class="form-control" readonly />
+            <span asp-validation-for="PerkuliahanId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Nim">NIM:</label>
+            <input asp-for="Nim" id="Update_NIM" class="form-control" />
+            <span asp-validation-for="Nim" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Kode_MK">Kode MK:</label>
+            <input asp-for="Kode_MK" id="Update_Kode_MK" class="form-control" />
+            <span asp-validation-for="Kode_MK" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Nip">NIP:</label>
+            <input asp-for="Nip" id="Update_NIP" class="form-control" />
+            <span asp-validation-for="Nip" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Nilai">Nilai:</label>
+            <input asp-for="Nilai" id="Update_Nilai" class="form-control" />
+            <span asp-validation-for="Nilai" class="text-danger"></span>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="updatePerkuliahan()">Update</button>
+    </form>
+</div>
+
+<div id="pesan-sukses" style="display: none;">
+    <!-- Container untuk pesan sukses -->
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Mengambil nilai ID Perkuliahan dari parameter query string
+        const urlParams = new URLSearchParams(window.location.search);
+        const perkuliahanId = urlParams.get('perkuliahanId');
+
+        // Mengisi nilai pada form UpdatePerkuliahan
+        document.getElementById('Update_PerkuliahanId').value = perkuliahanId;
+    });
+
+    function updatePerkuliahan() {
+        const formData = {
+            PerkuliahanId: document.getElementById('Update_PerkuliahanId').value,
+            Nim: document.getElementById('Update_NIM').value,
+            Kode_MK: document.getElementById('Update_Kode_MK').value,
+            Nip: document.getElementById('Update_NIP').value,
+            Nilai: document.getElementById('Update_Nilai').value
+        };
+
+        fetch('/Perkuliahan/UpdatePerkuliahan', {
+            method: 'PUT',
+            body: JSON.stringify(formData),
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.getElementsByName("__RequestVerificationToken")[0].value
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(result => {
+            const pesanSuksesContainer = document.getElementById('pesan-sukses');
+            const updateContainer = document.getElementById('update-container');
+            
+            if (result.success) {
+                pesanSuksesContainer.innerHTML = `
+                    <p>Update Success!</p>
+                    <div id="button-container">
+                        <a href="/Perkuliahan/DashboardPerkuliahan" class="btn btn-secondary">Back To Perkuliahan Dashboard</a>
+                    </div>`;
+            } else {
+                console.error('Gagal Update data:', result.errors);
+            }
+
+            updateContainer.style.display = 'none';
+            pesanSuksesContainer.style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>

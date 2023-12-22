@@ -1,0 +1,105 @@
+@model Test7.Models.Mahasiswa
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div id="update-container">
+    <h2>Update Mahasiswa</h2>
+
+    <form id="update-form" asp-action="UpdateMahasiswa" method="put">
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <label asp-for="Nim">NIM:</label>
+            <input asp-for="Nim" id="Update_Nim" class="form-control" readonly />
+            <span asp-validation-for="Nim" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Nama_Mhs">Nama Mahasiswa:</label>
+            <input asp-for="Nama_Mhs" id="Update_Nama_Mhs" class="form-control" />
+            <span asp-validation-for="Nama_Mhs" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Tgl_Lahir">Tanggal Lahir:</label>
+            <input asp-for="Tgl_Lahir" id="Update_Tgl_Lahir" type="date" class="form-control" />
+            <span asp-validation-for="Tgl_Lahir" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Alamat">Alamat:</label>
+            <input asp-for="Alamat" id="Update_Alamat" class="form-control" />
+            <span asp-validation-for="Alamat" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Jenis_Kelamin">Jenis Kelamin:</label>
+            <select asp-for="Jenis_Kelamin" id="Update_Jenis_Kelamin" name="Update_Jenis_Kelamin" class="form-control">
+                <option value="0">Laki-Laki</option>
+                <option value="1">Perempuan</option>
+            </select>
+            <span asp-validation-for="Jenis_Kelamin" class="text-danger"></span>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="updateMahasiswa()">Update</button>
+    </form>
+</div>
+
+<div id="pesan-sukses" style="display: none;">
+    <!-- Container untuk pesan sukses -->
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Mengambil nilai NIM dari parameter query string
+        const urlParams = new URLSearchParams(window.location.search);
+        const nim = urlParams.get('nim');
+
+        // Mengisi nilai pada form UpdateMahasiswa
+        document.getElementById('Update_Nim').value = nim;
+    });
+
+    function getJenisKelaminValue() {
+        const jenisKelaminSelect = document.getElementById('Update_Jenis_Kelamin');
+        const selectedValue = jenisKelaminSelect.options[jenisKelaminSelect.selectedIndex].value;
+        return parseInt(selectedValue);
+    }
+
+    function updateMahasiswa() {
+        const formData = {
+            Nim: document.getElementById('Update_Nim').value,
+            Nama_Mhs: document.getElementById('Update_Nama_Mhs').value,
+            Tgl_Lahir: document.getElementById('Update_Tgl_Lahir').value,
+            Alamat: document.getElementById('Update_Alamat').value,
+            Jenis_Kelamin: getJenisKelaminValue()
+        };
+
+        fetch('/Mahasiswa/UpdateMahasiswa', {
+            method: 'PUT',
+            body: JSON.stringify(formData),
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.getElementsByName("__RequestVerificationToken")[0].value
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(result => {
+            const pesanSuksesContainer = document.getElementById('pesan-sukses');
+            const updateContainer = document.getElementById('update-container');
+            
+            if (result.success) {
+                pesanSuksesContainer.innerHTML = `
+                    <p>Update Success!</p>
+                    <div id="button-container">
+                        <a href="/Mahasiswa/DashboardMahasiswa" class="btn btn-secondary">Back To Mahasiswa Dashboard</a>
+                    </div>`;
+            } else {
+                console.error('Gagal Update data:', result.errors);
+            }
+
+            updateContainer.style.display = 'none';
+            pesanSuksesContainer.style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>

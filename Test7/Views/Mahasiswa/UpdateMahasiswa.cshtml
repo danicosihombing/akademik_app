@@ -1,6 +1,83 @@
 @model Test7.Models.Mahasiswa
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
+<style>
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    #update-container {
+        background-color: #f8f9fa; /* Warna latar belakang form */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        margin: auto;
+        text-align: center;
+    }
+
+    #pesan-sukses {
+        display: none;
+        text-align: center;
+        margin-top: 20px;
+        background-color: #d4edda; /* Warna latar belakang kotak sukses */
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    #button-container {
+        margin-top: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        font-size: 1.2em;
+        margin-bottom: 5px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        font-size: 1em;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+    }
+
+    .btn-primary {
+        width: 50%; /* Lebar tombol Update */
+        padding: 10px;
+        font-size: 1.2em;
+        background-color: #f5c22a; /* Warna kuning */
+        border: none;
+        border-radius: 4px;
+        color: #212529; /* Warna teks tombol */
+    }
+
+    .btn-secondary {
+        margin-top: 10px;
+        display: inline-block;
+        padding: 10px;
+        font-size: 1.2em;
+        background-color: #007bff; /* Warna biru */
+        border: none;
+        border-radius: 4px;
+        color: #ffffff; /* Warna teks tombol */
+        text-decoration: none;
+    }
+
+    .text-success {
+        color: #155724; /* Warna teks sukses */
+    }
+</style>
+
 <div id="update-container">
     <h2>Update Mahasiswa</h2>
 
@@ -38,8 +115,11 @@
     </form>
 </div>
 
-<div id="pesan-sukses" style="display: none;">
-    <!-- Container untuk pesan sukses -->
+<div id="pesan-sukses" class="text-success" style="display:none;">
+    <p style="font-size: 1.5em;">Update Success!</p>
+    <div id="button-container">
+        <a href="/Mahasiswa/DashboardMahasiswa" class="btn btn-secondary">Back To Mahasiswa Dashboard</a>
+    </div>
 </div>
 
 <script>
@@ -75,31 +155,32 @@
                 'RequestVerificationToken': document.getElementsByName("__RequestVerificationToken")[0].value
             }
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(result => {
-            const pesanSuksesContainer = document.getElementById('pesan-sukses');
-            const updateContainer = document.getElementById('update-container');
-            
-            if (result.success) {
-                pesanSuksesContainer.innerHTML = `
-                    <p>Update Success!</p>
-                    <div id="button-container">
-                        <a href="/Mahasiswa/DashboardMahasiswa" class="btn btn-secondary">Back To Mahasiswa Dashboard</a>
-                    </div>`;
-            } else {
-                console.error('Gagal Update data:', result.errors);
-            }
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(result => {
+                const pesanSuksesContainer = document.getElementById('pesan-sukses');
+                const updateContainer = document.getElementById('update-container');
 
-            updateContainer.style.display = 'none';
-            pesanSuksesContainer.style.display = 'block';
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+                if (result.success) {
+                    pesanSuksesContainer.innerHTML = `
+                        <p style="font-size: 1.5em;">Update Success!</p>
+                        <div id="button-container">
+                            <a href="/Mahasiswa/DashboardMahasiswa" class="btn btn-secondary">Back To Mahasiswa Dashboard</a>
+                        </div>`;
+
+                    // Menyembunyikan elemen "update-form"
+                    updateContainer.style.display = 'none';
+                    pesanSuksesContainer.style.display = 'block';
+                } else {
+                    console.error('Gagal Update data:', result.errors);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
 </script>

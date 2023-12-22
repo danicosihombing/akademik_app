@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "gLbzLM/3pynqGEipm/gKooPNjpJAGwKGjLf0b8oAXzwTnsL3anTu0S0WvDaeiqD+QgFnjvjFcc+KEH3RpXiElg==",
+  "dgSpecHash": "lbICCjL8jktiIM58xZ68FzY+qJxUhRH6/56zfB2/Dme9ln/nPZrVRRKvvCvvwKsmhpD/lJEPJQDimHz5s1boaA==",
   "success": true,
-  "projectFilePath": "D:\\TUTORIAL VSCODE\\Test7\\Test7.csproj",
+  "projectFilePath": "D:\\SinarTambang\\Test7\\Test7.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\hp\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

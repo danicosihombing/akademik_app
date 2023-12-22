@@ -12,7 +12,7 @@ using Test7.Models;
 namespace Test7.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231222033554_InitialCreate")]
+    [Migration("20231222140823_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

@@ -97,6 +97,18 @@
     .text-success {
         color: #155724; /* Warna teks sukses */
     }
+
+    #error {
+        font-size: 1.5em;
+        color: rgb(100, 97, 97); 
+        text-align: center;
+    }
+
+    #tombolerror{
+        text-align: center;
+    }
+
+    
 </style>
 
 <div id="search-container">
@@ -147,9 +159,9 @@
                         </div>`;
                 } else {
                     resultContainer.innerHTML = `
-                        <p style="font-size: 1.5em;">Matakuliah Not Found</p>
-                        <div id="button-container">
-                            <a href="/Matakuliah/DashboardMatakuliah" class="btn btn-secondary">Kembali</a>
+                        <p id="error">Matakuliah Not Found</p>
+                        <div id="tombolerror">
+                            <a  href="/Matakuliah/DashboardMatakuliah" class="btn btn-secondary">Kembali</a>
                         </div>`;
                 }
 

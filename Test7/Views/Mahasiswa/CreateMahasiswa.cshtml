@@ -1,32 +1,114 @@
 @model Test7.Models.Mahasiswa
-
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<style>
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    #create-container {
+        background-color: #f8f9fa; /* Warna latar belakang form */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        margin: auto;
+        margin-top: 50px;
+        text-align: center;
+    }
+
+    #pesan-sukses {
+        display: none;
+        text-align: center;
+        margin-top: 20px;
+        background-color: #d4edda; /* Warna latar belakang kotak sukses */
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    #button-container {
+        margin-top: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        font-size: 1.2em;
+        margin-bottom: 5px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        font-size: 1em;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+    }
+
+    .btn-primary {
+        width: 50%; /* Lebar tombol Create */
+        padding: 10px;
+        font-size: 1.2em;
+        background-color: #f5c22a; /* Warna kuning */
+        border: none;
+        border-radius: 4px;
+        color: #212529; /* Warna teks tombol */
+    }
+
+    .btn-secondary {
+        margin-top: 10px;
+        display: inline-block;
+        padding: 10px;
+        font-size: 1.2em;
+        background-color: #007bff; /* Warna biru */
+        border: none;
+        border-radius: 4px;
+        color: #ffffff; /* Warna teks tombol */
+        text-decoration: none;
+    }
+
+    .text-success {
+        color: #155724; /* Warna teks sukses */
+    }
+</style>
 
 <div id="create-container">
     <h2>Create Mahasiswa</h2>
 
     <form id="create-form" asp-action="CreateMahasiswa" method="post">
         @Html.AntiForgeryToken()
+
         <div class="form-group">
             <label asp-for="Nim">NIM:</label>
             <input asp-for="Nim" id="Nim" class="form-control" />
             <span asp-validation-for="Nim" class="text-danger"></span>
         </div>
+
         <div class="form-group">
             <label asp-for="Nama_Mhs">Nama:</label>
             <input asp-for="Nama_Mhs" id="Nama_Mhs" class="form-control" />
             <span asp-validation-for="Nama_Mhs" class="text-danger"></span>
         </div>
+
         <div class="form-group">
             <label asp-for="Tgl_Lahir">Tanggal Lahir:</label>
             <input asp-for="Tgl_Lahir" id="Tgl_Lahir" type="date" class="form-control" />
             <span asp-validation-for="Tgl_Lahir" class="text-danger"></span>
         </div>
+
         <div class="form-group">
             <label asp-for="Alamat">Alamat:</label>
             <input asp-for="Alamat" id="Alamat" class="form-control" />
             <span asp-validation-for="Alamat" class="text-danger"></span>
         </div>
+
         <div class="form-group">
             <label asp-for="Jenis_Kelamin">Jenis Kelamin:</label>
             <select asp-for="Jenis_Kelamin" id="Jenis_Kelamin" name="Jenis_Kelamin" class="form-control">
@@ -35,11 +117,16 @@
             </select>
             <span asp-validation-for="Jenis_Kelamin" class="text-danger"></span>
         </div>
+
         <button type="button" class="btn btn-primary" onclick="createMahasiswa()">Create</button>
     </form>
 </div>
+
 <div id="pesan-sukses" class="text-success" style="display:none;">
-    <!-- Pesan sukses dan tombol Create Again ditampilkan di sini -->
+    <p>Create Success!</p>
+    <div id="button-container">
+        <a href="/Mahasiswa/DashboardMahasiswa" class="btn btn-secondary">Back To Mahasiswa Dashboard</a>
+    </div>
 </div>
 
 <script>

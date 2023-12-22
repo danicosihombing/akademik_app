@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\TUTORIAL VSCODE\\Test7\\Test7.csproj": {}
+    "D:\\SinarTambang\\Test7\\Test7.csproj": {}
   },
   "projects": {
-    "D:\\TUTORIAL VSCODE\\Test7\\Test7.csproj": {
+    "D:\\SinarTambang\\Test7\\Test7.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\TUTORIAL VSCODE\\Test7\\Test7.csproj",
+        "projectUniqueName": "D:\\SinarTambang\\Test7\\Test7.csproj",
         "projectName": "Test7",
-        "projectPath": "D:\\TUTORIAL VSCODE\\Test7\\Test7.csproj",
+        "projectPath": "D:\\SinarTambang\\Test7\\Test7.csproj",
         "packagesPath": "C:\\Users\\hp\\.nuget\\packages\\",
-        "outputPath": "D:\\TUTORIAL VSCODE\\Test7\\obj\\",
+        "outputPath": "D:\\SinarTambang\\Test7\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\hp\\AppData\\Roaming\\NuGet\\NuGet.Config"
